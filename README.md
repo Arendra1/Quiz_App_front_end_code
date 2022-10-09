@@ -26,4 +26,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 =======
 # Quiz_App_front_end_code
 This is the repository that have frontend code of quiz app 
->>>>>>> dfc1f6f81becb8f87556d04f45094038e8f5fdc4
+
