@@ -1,7 +1,7 @@
 <template>
     <div class="">
-        <div class="main h-fit bg-[#f3f7f7] py-20 px-60 overflow-hidden">
-            <h1 class="mx-96 font-bold text-green-900 text-3xl font-sans mb-4">Quiz<span
+        <div class="main h-fit bg-[#131417] py-20 px-60 overflow-hidden">
+            <h1 class="mx-96 font-bold text-green-600 text-3xl font-sans mb-4">Quiz<span
                     class="text-yellow-500">Mania</span>
             </h1>
             <div

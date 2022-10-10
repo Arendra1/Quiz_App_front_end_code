@@ -39,7 +39,7 @@
                         <button
                             class="float-right px-5 py-2 bg-indigo-600 text-white text-sm font-bold tracking-wide rounded-full"
                             v-show="selectedAnswer != '' && (index == count - 1)" @click="showResults()">
-                            Finish
+                            Result
                         </button>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                         class="float-right px-5 py-2 bg-indigo-600 text-white text-sm font-bold tracking-wide rounded-full"
                         v-show=" selectedAnswer != '' && index == count "
                         @click="resetQuiz()">
-                         Attemp Again
+                         Finish
                     </button>
                 </div>
             </div>
@@ -70,10 +70,14 @@
 </template>
 
 <script>
+
+import axios from 'axios';
+
 export default {
   name: 'QuizPage',
   data(){
         return{
+            totalScore:0,
             index : 0,
             count : 3,
             correctAnswer: 0,
@@ -120,8 +124,37 @@ export default {
         },
         showResults(){
             this.index++;
+            this.totalScore += this.correctAnswer;
+            console.log(this.correctAnswer);
+            console.log(` Total score is : ${this.totalScore}`);
         },
-        resetQuiz(){
+       async  resetQuiz(){
+
+            try{
+
+                const userInfo = await axios.get('http://localhost:8000/api/user/loggeduser');
+                console.log(userInfo);
+                console.log('Correct Answers are : ', this.correctAnswer);
+                let newScore = this.correctAnswer;
+                let id = userInfo.data.user._id;
+                let originalScore = userInfo.data.user.score;
+                let totalScore =  originalScore +  newScore;
+                console.log( 'originalScore',totalScore);
+
+                let userIdAndScore = {
+                    id,
+                    totalScore
+                }
+
+                console.log('userIdAndScore : ',userIdAndScore);
+                const response = await axios.post('http://localhost:8000/api/user/update' ,userIdAndScore );
+                console.log(response);
+
+            }
+            catch(error){
+                console.log(error);
+            }
+
             this.index = 0;
             this.selectedAnswer = '';
             this.correctAnswer = 0;

@@ -1,7 +1,7 @@
 <template>
   <div class="">
-    <div class="main h-fit bg-[#f3f7f7] py-40 px-60 overflow-hidden">
-      <h1 class="mx-96 font-bold text-green-900 text-3xl font-sans mb-4">Quiz<span class="text-yellow-500">Mania</span>
+    <div class="main h-fit bg-[#131417] py-40 px-60 overflow-hidden">
+      <h1 class="mx-96 font-bold text-green-600 text-3xl font-sans mb-4">Quiz<span class="text-yellow-500">Mania</span>
       </h1>
       <div class="outerdiv bg-white  mx-60 space-y-8 w-1/2 h-80 flex flex-col justify-center items-center rounded-sm">
         <div class="heading font-bold text-2xl font-mono">Log In</div>
@@ -29,6 +29,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
+import setAuthHeader from '@/utils/setAuthHeader';
 Vue.use(VueToast);
 export default {
   name: 'LogInPage',
@@ -98,24 +99,35 @@ export default {
       }).then((data)=>{
           // console.log(data.user);
         Vue.$toast.open(`${data.message}`);
-          return data.user;
+          return data;
       }).catch((error)=>{
         console.log("Error is as follows");
         console.log(error);
         this.success = false;
       })
 
-      console.log(response);
+      console.log(response.user);
+      console.log(response.token);
+      // console.log(response.name);
+      // console.log(response.email);
+      // console.log(response.accessLevel);
+      // console.log(response.score);
 
-      if(response){
-          if(response.accessLevel == "Student"){
-              this.$router.push({path: '/home' , replace:true})
+      if(response.user){
+          console.log(response.user.accessLevel);
+          if(response.user.accessLevel == "Student"){
+              this.$router.push({path:'/home'  , replace:true})
               Vue.$toast.open('Login Successfull');
-             
+              localStorage.setItem("jwToken" , response.token);
+              setAuthHeader(response.token);
+            //  sending all deatils as params
+            // `/home/${response.name}/${response.email}/${response.accessLevel}/${response.score}`
           }
           else{
             this.$router.push({path: '/teacherHome' , replace:true})
             Vue.$toast.open('Login Successfull');
+            localStorage.setItem("jwtToken" , response.token);
+            setAuthHeader(response.token);
           }
           return true;
       }
