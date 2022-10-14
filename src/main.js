@@ -16,7 +16,8 @@ import TeacherHomePage from './components/TeacherHomePage.vue';
 import QuizPage from './components/QuizPage.vue';
 import AddQuizPage from './components/AddQuizPage.vue';
 import LeaderBoardPage from './components/LeaderBoardPage.vue';
-import setAuthHeader from './utils/setAuthHeader.js'
+import AddQuestionPage from './components/AddQuestionPage.vue';
+import setAuthHeader from './utils/setAuthHeader.js';
 
 Vue.config.productionTip = false
 
@@ -27,7 +28,8 @@ const routes = [
   {path:'/teacherHome' , component : TeacherHomePage},
   {path:'/quiz' , component : QuizPage},
   {path:'/addQuiz' , component : AddQuizPage},
-  {path:'/leadboard' , component : LeaderBoardPage}
+  {path:'/leadboard' , component : LeaderBoardPage},
+  {path:'/addQuestion' , component : AddQuestionPage}
 
 ];
 

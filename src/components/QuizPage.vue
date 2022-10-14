@@ -5,6 +5,8 @@
     <!-- sample quiz start -->
 
     <div class="flex w-full h-screen justify-center items-center "  id="app">
+        <p v-if="success" >{{currentQuiz()}}</p>
+        <p v-else ></p>
         <div class="w-full max-w-xl">
             <h1 class="font-bold text-5xl text-center text-indigo-700">Attemp Quiz</h1>
             <div class="bg-white p-12 rounded-lg shadow-lg w-full mt-8">
@@ -33,12 +35,12 @@
                     <div class="mt-6 flow-root">
                         <button
                             class="float-right px-5 py-2 bg-indigo-600 text-white text-sm font-bold tracking-wide rounded-full"
-                            v-show="selectedAnswer != '' && (index < count-1)" @click="nextQuestion()">
+                            v-show="selectedAnswer != '' && (index < (count - 1))" @click="nextQuestion()">
                             Next &gt;
                         </button>
                         <button
                             class="float-right px-5 py-2 bg-indigo-600 text-white text-sm font-bold tracking-wide rounded-full"
-                            v-show="selectedAnswer != '' && (index == count - 1)" @click="showResults()">
+                            v-show="selectedAnswer != '' && (index === count - 1)" @click="showResults()">
                             Result
                         </button>
                     </div>
@@ -77,6 +79,7 @@ export default {
   name: 'QuizPage',
   data(){
         return{
+            success: true,
             totalScore:0,
             index : 0,
             count : 3,
@@ -98,12 +101,79 @@ export default {
                     question : 'Which of the following sorting algorithms can be used to sort a random linked list with minimum time complexity?',
                     answers : {a: 'Merge Sort', b:'Heap Sort' , c: 'Quick Sort' , d : 'Insertion Sort'},
                     correctAnswer : 'a'
+                },
+                {
+                    question : 'Which of the following sorting algorithms can be used to sort a random linked list with minimum time complexity?',
+                    answers : {a: 'Merge Sort', b:'Heap Sort' , c: 'Quick Sort' , d : 'Insertion Sort'},
+                    correctAnswer : 'a'
+                },
+                {
+                    question : 'Which of the following sorting algorithms can be used to sort a random linked list with minimum time complexity?',
+                    answers : {a: 'Merge Sort', b:'Heap Sort' , c: 'Quick Sort' , d : 'Insertion Sort'},
+                    correctAnswer : 'a'
                 }
             ]
         }
     },
 
     methods :{
+
+        // Fetching and assigning the current quiz function start
+
+
+        async currentQuiz()
+        {
+            setTimeout(async()=>{
+
+            console.log('Current Quiz Function has called');
+            const quizId = localStorage.getItem('quizId');
+            console.log("Quiz Id from localStorage ********** : ",quizId,"  **********");
+            let doc = {quizId};
+            const response = await axios.post('http://localhost:8000/api/quiz/getQuiz', doc);
+            // console.log("Quiz ID : ", quizId);
+            console.log("****current  Quiz in current quiz page  *** : ", response.data.quiz);
+
+            let quiz = await response.data.quiz;
+
+            const _id = quiz._id;
+            const count = quiz.attemptedBy + 1;
+
+            const bdyObj = {
+                _id,
+                count
+            }
+            
+            // INCREMENT IN ATTEMPTED BY OF CURRENT QUIZ
+            const result = await axios.post('http://localhost:8000/api/quiz/incAttemptedBy',bdyObj);  
+            console.log(result);
+
+
+            if(quiz)
+            {
+                // console.log(quiz.questions);
+                this.questions = quiz.questions;
+                // this.count = this.questions.length;
+            }else{
+                console.log('Quiz Does not Exists');
+            }
+
+            this.success = false;
+
+
+
+
+            },400)
+
+        },
+
+
+
+        // Fetching and assigning the current quiz function end
+
+
+
+
+
         answered(e){ 
             // console.log(e);
             // console.log(e.target.value);
@@ -149,6 +219,8 @@ export default {
                 console.log('userIdAndScore : ',userIdAndScore);
                 const response = await axios.post('http://localhost:8000/api/user/update' ,userIdAndScore );
                 console.log(response);
+                this.$router.push({path:'/home',replace:true});
+                localStorage.removeItem('quizId');
 
             }
             catch(error){

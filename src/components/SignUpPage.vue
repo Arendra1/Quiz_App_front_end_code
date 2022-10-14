@@ -13,11 +13,19 @@
                         type="text" v-model="name" placeholder="Enter your name">
                     <input
                         class="h-12 w-96 px-10 rounded-sm bg-[#f3f7f7] border-2 border-[#f3f7f7] hover:focus cursor-pointer"
-                        type="email" v-model="email" placeholder="Enter your email">   
-                    <select v-model="accessLevel"  class="h-12 w-96 px-10  rounded-sm bg-[#f3f7f7] border-2 border-[#f3f7f7] hover:focus cursor-pointer">
-                        <option value="Select Access Level" disabled selected >Select Access Level</option>
+                        type="email" v-model="email" placeholder="Enter your email">
+                    <select v-model="accessLevel"
+                        class="h-12 w-96 px-10  rounded-sm bg-[#f3f7f7] border-2 border-[#f3f7f7] hover:focus cursor-pointer">
+                        <option value="Select Access Level" disabled selected>Select Access Level</option>
                         <option value="Teacher">Teacher</option>
                         <option value="Student">Student</option>
+                    </select>
+                    <select v-model="domain"
+                        class="h-12 w-96 px-10 text-black rounded-sm bg-[#f3f7f7] border-2 border-[#f3f7f7] hover:focus cursor-pointer">
+                        <option value="Select Access Level" disabled selected>Select domain</option>
+                        <option value="Aptitude">Aptitude</option>
+                        <option value="DSA">DSA</option>
+                        <option value="Programming">Programming</option>
                     </select>
                     <input class="h-12 w-96 px-10 rounded-sm bg-[#f3f7f7] border-2 border-[#f3f7f7]" type="password"
                         v-model="password" placeholder="Your password">
@@ -29,6 +37,12 @@
                         class="btn  bg-[#1ba94c] text-white font-bold w-20 h-10 rounded-sm hover:bg-green-700">
                         <router-link to="/" exact>Sign Up</router-link>
                     </button>
+                </div>
+                <div class="login flex   ">
+                    <p class="font-semibold  mb-4 text-black mr-2">Already have an account ?</p>
+                    <a href="#" class="text-green-800 font-bold   hover:text-green-700">
+                        <router-link to="/login" exact>Login here</router-link>
+                    </a>
                 </div>
             </div>
         </div>
@@ -47,16 +61,18 @@ export default {
         return {
             name: '',
             email: '',
-            accessLevel : '',
+            accessLevel: '',
+            domain:'',
             password: '',
             password_confirmation: '',
+
 
         }
     },
     methods: {
 
         checkInput() {
-            if (this.name && this.email && this.accessLevel && this.password && this.password_confirmation ) {
+            if (this.name && this.email &&  this.domain && this.accessLevel && this.password && this.password_confirmation) {
                 if (this.password === this.password_confirmation) {
                     return true;
                 }
@@ -72,7 +88,7 @@ export default {
         async register() {
             this.checkInput();
             // Toast for required details to be filled by the user
-            if (this.name && this.email && this.accessLevel && this.password && this.password_confirmation) {
+            if (this.name && this.email && this.domain && this.accessLevel && this.password && this.password_confirmation) {
                 if (this.password === this.password_confirmation) {
                     if (this.password.length >= 6 && this.password.length <= 15) {
                         Vue.$toast.open('Successfully Created Account');
@@ -95,7 +111,8 @@ export default {
             const newUser = {
                 name: this.name,
                 email: this.email,
-                accessLevel : this.accessLevel,
+                accessLevel: this.accessLevel,
+                domain : this.domain,
                 password: this.password,
                 password_confirmation: this.password_confirmation
 

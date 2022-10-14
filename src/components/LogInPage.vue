@@ -3,7 +3,7 @@
     <div class="main h-fit bg-[#131417] py-40 px-60 overflow-hidden">
       <h1 class="mx-96 font-bold text-green-600 text-3xl font-sans mb-4">Quiz<span class="text-yellow-500">Mania</span>
       </h1>
-      <div class="outerdiv bg-white  mx-60 space-y-8 w-1/2 h-80 flex flex-col justify-center items-center rounded-sm">
+      <div class="outerdiv bg-white  mx-60 space-y-8 w-1/2 h-96 flex flex-col justify-center items-center rounded-sm">
         <div class="heading font-bold text-2xl font-mono">Log In</div>
         <div class="form flex flex-col space-y-8">
           <input class="h-12 w-96 px-10 rounded-sm bg-[#f3f7f7] border-2 border-[#f3f7f7] hover:focus cursor-pointer"
@@ -18,6 +18,10 @@
           <!-- <button  v-else @click="login()" class="btn  bg-[#1ba94c] text-white font-bold w-20 h-10 rounded-sm hover:bg-green-700">
             <router-link to="/" exact>Log In</router-link>
           </button> -->
+        </div>
+        <div class="register flex ">
+          <p class="font-semibold  text-black mr-2">Not have an account ?</p>
+          <a href="#" class="text-green-700 font-bold"><router-link to="/" exact>Register here</router-link></a>
         </div>
       </div>
     </div>
@@ -117,18 +121,19 @@ export default {
           console.log(response.user.accessLevel);
           if(response.user.accessLevel == "Student"){
               this.$router.push({path:'/home'  , replace:true})
-              Vue.$toast.open('Login Successfull');
-              localStorage.setItem("jwToken" , response.token);
-              setAuthHeader(response.token);
+              // Vue.$toast.open('Login Successfull');
+              // localStorage.setItem("jwToken" , response.token);
+              // setAuthHeader(response.token);
             //  sending all deatils as params
             // `/home/${response.name}/${response.email}/${response.accessLevel}/${response.score}`
           }
           else{
             this.$router.push({path: '/teacherHome' , replace:true})
-            Vue.$toast.open('Login Successfull');
-            localStorage.setItem("jwtToken" , response.token);
-            setAuthHeader(response.token);
+            // Vue.$toast.open('Login Successfull');
+            
           }
+          localStorage.setItem("jwtToken" , response.token);
+          setAuthHeader(response.token);
           return true;
       }
       else{
@@ -139,6 +144,8 @@ export default {
     }
 
   }
+
+  
 }
 </script>
 

@@ -1,11 +1,12 @@
 <template>
   <div class="outermost h-screen bg-[#131417]">
-    <h1 class="font-sans text-2xl text-white font-bold flex justify-center pt-2">Welcome to the LeaderBoard Page</h1>
+    <h1 class="font-sans text-2xl text-green-500 font-bold flex justify-center pt-2  -mb-10">Welcome to    <span class="text-yellow-500 ml-2"> LeadBoard</span></h1>
     <!-- <p class="text-white"> This is score {{score}}</p> -->
-    <div class="btn flex justify-center items-center mt-4">
-      <button class="
-            btn bg-purple-800 w-24 h-8 text-white font-bold text-sm rounded-md hover:bg-purple-900" @click="getData()">Get Data
-      </button>
+    <div class="btn  text-[#131417]  mt-4">
+      {{ getData()  }}
+      <!-- <button class="
+            btn bg-purple-800 w-24 h-8 text-white font-bold text-sm rounded-md hover:bg-purple-900" @click="getData()">Get Data {{ getData() }}
+      </button> -->
     </div>
 
     <!-- Tabke data Starts -->
@@ -20,6 +21,9 @@
               <tr>
                 <th scope="col" class="py-3 px-6">
                   Name
+                </th>
+                <th scope="col" class="py-3 px-6">
+                  Country
                 </th>
                 <th scope="col" class="py-3 px-6">
                   Rank
@@ -52,6 +56,7 @@ export default {
   data() {
     return {
       score: 0,
+      success : true
 
     }
   },
@@ -80,7 +85,8 @@ export default {
         // let length = Users.length ;
 
 
-        Users.forEach((user,index) => { 
+        // let flagApi = 'https://countryflagsapi.com/png/br';
+        Users.forEach(async (user,index) => { 
           // console.log("index is : ", index);
           if(index > 0 && Users[index-1].score === Users[index].score )
           {
@@ -90,9 +96,18 @@ export default {
             rank++;
           }
 
+          // for flag of countries
+          // let countryName = user.country;
+          // const  country =  countryName.toLowerCase();
+          // const countryFlag = await axios.get(`https://countryflagsapi.com/png/${country}`);
+          // console.log("countryFlag : ", countryFlag);
+
           htmlUserInfo += `<tr class="bg-[#131417] border-b   dark:border-gray-700">
               <td class="py-4 px-6">
                 ${user.name}
+              </td>
+              <td class="py-4 px-6">
+                ${user.country}
               </td>
               <td class="py-4 px-6">
                 ${rank}
@@ -123,6 +138,7 @@ export default {
 
 }
 
+// this.getData();
 // let score = 0;
 // console.log(score);
 </script>
